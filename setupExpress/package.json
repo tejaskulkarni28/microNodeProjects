@@ -1,0 +1,14 @@
+{
+  "name": "setupexpress",
+  "version": "1.0.0",
+  "description": "This package is just for practice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tejas Kulkarni (theCoderNoob)",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
