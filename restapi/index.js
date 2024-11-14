@@ -41,13 +41,34 @@ app.get('/api/users/:id', (req, res)=>{
         const user = users.find(user=>user.id===id)
         res.send(user)
 })
+const bodyparser = require('body-parser')
+app.use(bodyparser.json()) // middleware for raw data sent from client side(postman for now) 
 app.patch('/api/users/:id', (req, res)=>{
         // request to be completed
-        const id = req.params.id;
-        console.log(id)
-        return res.json({
-                status: "pending"
-        })
+        try{
+                const id = Number(req.params.id)
+                const first_name = req.body.first_name; // this value needs to be updated
+                const last_name = req.body.last_name; // this value needs to be updated
+
+                // === has higher precedence than && 
+                (first_name === undefined) || (last_name === undefined) ? 
+                        console.log('Undefined: Value not in the scope') : console.log(first_name + ' ' + last_name) 
+                const readUsers = users;
+                const userIndex = readUsers.findIndex(user => user.id === id)
+                userIndex < 0 ? console.log('no index found') : console.log('index found ', userIndex)
+
+                users.at(userIndex).first_name = first_name;
+                users.at(userIndex).last_name = last_name;
+
+                fs.writeFile('MOCK_DATA.json', JSON.stringify(users), (error)=>{
+                        error? console.log(error) :  res.status(200).json({status: 'success', message: 'Data has been updated'})
+                })
+        }catch(error){
+                res.status(404).json({
+                        status: 'Error',
+                        message: 'User not updated. Please check the code'
+                })
+        }
 })
 // req.query object retrieves the query parameter data
 app.get('/test/path', (req, res)=>{
